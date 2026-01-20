@@ -11,17 +11,23 @@ using namespace std;
 // const Image& im: input image
 // return the corresponding grayscale image
 Image rgb_to_grayscale(const Image& im)
-  {
-  assert(im.c == 3); // only accept RGB images
-  Image gray(im.w,im.h,1); // create a new grayscale image (note: 1 channel)
+{
+    assert(im.c == 3); // only accept RGB images
+    Image gray(im.w,im.h,1); // create a new grayscale image (note: 1 channel)
   
-  // TODO: calculate the pixels of 'gray'
-  
-  
-  NOT_IMPLEMENTED();
-  
-  return gray;
-  }
+    // TODO: calculate the pixels of 'gray'
+    //NOT_IMPLEMENTED();
+
+    const float red_weight = 0.299f, green_weight = 0.587f, blue_weight = 0.114;
+    for (size_t y = 0; y < gray.h; y++)
+    {
+        for (size_t x = 0; x < gray.w; x++)
+        {
+            gray(x, y, 0) = red_weight * im(x, y, 0) + green_weight * im(x, y, 1) + blue_weight * im(x, y, 2);
+        }
+    }
+    return gray;
+}
 
 
 

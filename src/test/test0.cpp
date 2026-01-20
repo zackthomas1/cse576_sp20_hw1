@@ -44,6 +44,7 @@ void test_grayscale()
   Image im = load_image("data/colorbar.png");
   Image gray = rgb_to_grayscale(im);
   Image g = load_image("data/gray.png");
+  g.save_image("output/gray_test");
   TEST(same_image(gray, g));
   }
 
@@ -64,8 +65,6 @@ void test_shift()
   TEST(within_eps(im.data[2*im.w*im.h+72],  c.data[2*im.w*im.h + 72]));
   TEST(within_eps(im.data[im.w*im.h+47] + .1,  c.data[im.w*im.h + 47]));
   }
-
-
 
 void test_rgb_to_hsv()
   {
@@ -94,6 +93,27 @@ void test_rgb2lch2rgb()
   TEST(same_image(im, c));
   }
 
+void test_getting_setting_pixel()
+{
+    Image im2 = load_image("data/dog.jpg");
+
+    for (int i = 0; i < im2.w; i++)
+    {
+        for (int j = 0; j < im2.h; j++)
+        {
+            im2(i, j, 2) = 0.0f;
+        }
+    }
+    im2.save_image("output/set_pixel_result");
+}
+
+void test_copy_image()
+{
+    Image im1 = load_image("data/dog.jpg");
+    Image im2 = im1;
+
+    im2.save_image("output/copy_image_result");
+}
 
 void run_tests()
   {
@@ -108,6 +128,12 @@ void run_tests()
   printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
   }
 
+void run_custom_test()
+{
+    test_getting_setting_pixel();
+    test_copy_image();
+}
+
 int main(int argc, char **argv)
   {
   // Image manipulation for fun testing.
@@ -119,8 +145,8 @@ int main(int argc, char **argv)
   im2.save_image("output/pixel_modifying_output");
   
   // Running example tests
-  
   run_tests();
+  //run_custom_test();
   
   return 0;
   }
