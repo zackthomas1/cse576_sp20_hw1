@@ -2,6 +2,7 @@
 bin/
 build/
 output/
+includes/
 *.sln
 *.vcxproj
 *.vcxproj.filters

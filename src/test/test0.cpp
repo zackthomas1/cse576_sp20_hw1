@@ -2,7 +2,6 @@
 #include "../utils.h"
 
 #include <string>
-
 using namespace std;
 
 void test_get_pixel()
@@ -91,8 +90,13 @@ void test_rgb2lch2rgb()
   rgb_to_lch(im);
   lch_to_rgb(im);
   TEST(same_image(im, c));
+
+  im.save_image("output/rgb2lch2rgb_result");
   }
 
+
+// Custom test case functions
+// --------------------------
 void test_getting_setting_pixel()
 {
     Image im2 = load_image("data/dog.jpg");
@@ -115,6 +119,67 @@ void test_copy_image()
     im2.save_image("output/copy_image_result");
 }
 
+void test_shift_image()
+{
+    Image im1 = load_image("data/dog.jpg");
+
+    shift_image(im1, 0, 0.4);
+    shift_image(im1, 1, 0.4);
+    shift_image(im1, 2, 0.4);
+    clamp_image(im1);
+
+    im1.save_image("output/shift_image_result");
+}
+
+void test_hsv_scale()
+{
+    Image im1 = load_image("data/dog.jpg");
+
+    rgb_to_hsv(im1);
+    //shift_image(im1, 1, 0.2f);
+    scale_image(im1, 1, 4);
+    clamp_image(im1);
+    hsv_to_rgb(im1);
+
+    im1.save_image("output/hsv_scale_result");
+}
+
+void test_rgb2xyz2rgb()
+{
+    Image im1 = load_image("data/dog.jpg");
+    Image c = im1;
+
+    srgb_to_rgb(im1);
+    rgb_to_xyz(im1);
+    xyz_to_rgb(im1);
+    rgb_to_srgb(im1);
+
+    TEST(same_image(im1, c));
+
+    im1.save_image("output/rgb2xyz2rgb_result");
+}
+
+void test_lch_scale()
+{
+    Image im1 = load_image("data/dog.jpg");
+    rgb_to_lch(im1);
+    shift_image(im1, 1, 10.0f);
+    //scale_image(im1, 1, 1.2);
+    lch_to_rgb(im1);
+
+    im1.save_image("output/lch_scale_result");
+}
+
+void test_rgb_to_lch()
+{
+    Image im1 = load_image("data/dog.jpg");
+    rgb_to_lch(im1);
+    im1.save_image("output/rgb_lch_result");
+}
+
+
+// Call test functions
+// -------------------
 void run_tests()
   {
   test_get_pixel();
@@ -125,15 +190,21 @@ void run_tests()
   test_rgb_to_hsv();
   test_hsv_to_rgb();
   test_rgb2lch2rgb();
-  printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
   }
 
-void run_custom_test()
+void run_custom_tests()
 {
     test_getting_setting_pixel();
     test_copy_image();
+    test_shift_image();
+    test_hsv_scale();
+    test_rgb2xyz2rgb();
+    test_lch_scale();
+    test_rgb_to_lch();
 }
 
+// Main
+// ----
 int main(int argc, char **argv)
   {
   // Image manipulation for fun testing.
@@ -146,7 +217,8 @@ int main(int argc, char **argv)
   
   // Running example tests
   run_tests();
-  //run_custom_test();
-  
+  run_custom_tests();
+  printf("%d tests, %d passed, %d failed\n", tests_total, tests_total - tests_fail, tests_fail);
+
   return 0;
   }

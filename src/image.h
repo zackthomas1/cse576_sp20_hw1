@@ -209,6 +209,14 @@ Image rgb_to_grayscale(const Image& im);
 Image grayscale_to_rgb(const Image& im, float r, float g, float b);
 void rgb_to_hsv(Image& im);
 void hsv_to_rgb(Image& im);
+
+void srgb_to_rgb(Image& im);
+void rgb_to_srgb(Image& im);
+void rgb_to_xyz(Image& im);
+void xyz_to_rgb(Image& im);
+void xyz_to_lch(Image& im);
+void lch_to_xyz(Image& im);
+
 void lch_to_rgb(Image& im);
 void rgb_to_lch(Image& im);
 void shift_image(Image& im, int c, float v);

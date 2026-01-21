@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include <format>
 
 using namespace std;
 
@@ -67,4 +68,23 @@ __ProfileScopeClass(int line,const std::string& fname,int level,const std::strin
 
 #define NOT_IMPLEMENTED() do{static bool done=false;if(!done)fprintf(stderr,"Function \"%s\"  in file \"%s\" line %d not implemented yet!!!\n",__FUNCTION__, __FILE__, __LINE__);done=true;}while(0)
 
-
+#ifdef _DEBUG
+#define PASSERT(cond, message, ...) \
+    do { \
+        if (!(cond)) { \
+            fprintf(stderr, "Assertion Failed: "); \
+            fprintf(stderr, message, ##__VA_ARGS__); \
+            fprintf(stderr, "\n"); \
+            __debugbreak(); \
+        } \
+    } while (0)
+#else
+#define PASSERT(cond, message, ...) \
+    do { \
+        if (!(cond)) { \
+            fprintf(stderr, "Assertion Failed: "); \
+            fprintf(stderr, message, ##__VA_ARGS__); \
+            fprintf(stderr, "\n"); \
+        } \
+    } while (0)
+#endif
